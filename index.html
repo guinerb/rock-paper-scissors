@@ -4,9 +4,59 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/9f65f53def.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
-    <script src="rock-paper-scissors.js"></script>
+    <div class="wrapper" >
+        <div class="welcome" >
+            <header>
+                <h1>Welcome to Rock, Paper, Scissors Game.</h1>
+                <p>Score five points first to be the winner.</p>
+            </header>
+        </div>
+        <!-- use some animation when button is clicked https://fontawesome.com/docs/web/style/animate -->
+        <div class="gameplay" >
+            <div class="rps-btn" >  
+                <div>
+                    <button id="rock">
+                        <i class="hand-icon fa-regular fa-hand-back-fist fa-8x" id="hand-rock"></i>
+                    </button>
+                    <h4>Rock</h4>
+                </div>
+                
+                <div>
+                    <button id="paper">
+                        <i class="hand-icon fa-regular fa-hand fa-8x" id="hand-paper"></i>
+                    </button>
+                    <h4>Paper</h4>
+                </div>
+                
+                <div>
+                    <button id="scissors">
+                        <i class="hand-icon fa-regular fa-hand-scissors fa-8x" id="hand-scissors"></i>
+                    </button>
+                    <h4>Scissors</h4>
+                </div>    
+            </div><br><br>
+            
+            <div id="score">
+                <h3>Score:</h3><br>
+                <div id="pontuation">
+                    <div id="player">
+                        <p>Player</p>
+                        <span class="player-point">0</span>   
+                    </div>
+                    <div id="computer">
+                        <p>Computer</p>
+                        <span class="computer-point">0</span>
+                    </div>
+                </div>    
+            </div>
+            <div id="winner-msg"></div>
+        </div>
+    </div>    
+    <script src="rock-paper-scissors.js"></script>   
 </body>
 </html>

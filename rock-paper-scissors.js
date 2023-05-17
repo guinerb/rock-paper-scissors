@@ -1,8 +1,37 @@
+let playerSelection;
+let computerSelection;
+let playerPoint = parseInt(document.querySelector('.player-point').textContent);
+let computerPoint = parseInt(document.querySelector('.computer-point').textContent);
+
+let buttons = document.querySelectorAll('button');
+let handIcons = document.querySelectorAll('.hand-icon');
+
+const winnerMessage = document.querySelector('#winner-msg');
+const scoreMessage = document.createElement('p');
+
+function disableBtns() {
+    buttons.forEach((button) => {
+        button.setAttribute('disabled', '');
+        button.setAttribute('style', 'color: #919191;  border-color: #ccc');
+    });
+
+    handIcons.forEach(hand => {
+        hand.setAttribute('style', 'color: #ccc');
+    });
+}
+
+function showCounter(classString, textVar ) {
+    document.querySelector(classString).textContent = textVar;
+}
+
+function winnerAnouncement(msg) {
+    scoreMessage.textContent = msg;
+    winnerMessage.appendChild(scoreMessage);
+}
+
 function getComputerChoice() {
-    
     let randChoice = Math.floor((Math.random()*3)+1);
-    
-    let computerSelection = '';
+    let computerSelection;
     
     if (randChoice == 1) {
         computerSelection = "rock";
@@ -15,73 +44,38 @@ function getComputerChoice() {
     return computerSelection;
 }
 
-function getPlayerSelection() {
-
-    let playerSelection = prompt("Welcome to Rock, Paper, Scissors Game.");
-    
-    let gameOptions = "rock paper scissors";
-    gameOptions.toLowerCase();
-
-    if (playerSelection === null){
-        return;
-    }
-
-    if (gameOptions.includes(playerSelection.toLowerCase().trim()) === false) {
-        window.alert("Please, try again choosing between Rock, Paper or Scissors");
-    } else {
-        return playerSelection;
-    }    
-}
-    
-
 function playRound(playerSelection, computerSelection) {
-    playerSelection = getPlayerSelection();
-    computerSelection = getComputerChoice();
-
-    let scoreMessage = "";
-
-    if (playerSelection == computerSelection) {
-        scoreMessage = "Tie! Nobody Wins";
-    } else if (playerSelection == "rock" & computerSelection == "scissors"){
-        scoreMessage = "You Win! Rock beats Scissors";
-    } else if (playerSelection == "scissors" & computerSelection == "paper") {
-        scoreMessage = "You Win! Scissors beats Paper";
-    } else if (playerSelection == "paper" & computerSelection == "rock") {
-        scoreMessage = "You Win! Paper beats Rock";
-    } else {
-        scoreMessage = "You Lose!" + computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1) + " beats " + playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
-    }
-
-    return scoreMessage;
-    
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            playerSelection = button.id;
+            computerSelection = getComputerChoice();
+            if (playerSelection === computerSelection) {
+                scoreMessage.textContent = "Tie! Nobody Wins";
+                winnerMessage.appendChild(scoreMessage);
+            } else if (
+                playerSelection == "rock" & computerSelection == "scissors" ||
+                playerSelection == "scissors" & computerSelection == "paper" ||
+                playerSelection == "paper" & computerSelection == "rock"
+                )
+            {
+                winnerAnouncement("You Win! " + playerSelection + " beats " + computerSelection);
+                playerPoint+=1;
+                showCounter('.player-point', playerPoint);
+            } else {
+                winnerAnouncement("You Lose! " + computerSelection + " beats " +  playerSelection);
+                computerPoint+=1;           
+                showCounter('.computer-point', computerPoint);
+            }
+            
+            if (playerPoint === 5) {
+                disableBtns();
+                winnerAnouncement('You are The Winner! Please, reload the page to play again.');
+            } else if (computerPoint === 5) {
+                disableBtns();
+                winnerAnouncement('You Lost this game! Please, reload the page to play again.');
+            }
+        
+        });         
+    });
 }
-
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let overallScore = 0;
-    for (let i = 0; i < 5; i++) {
-        overallScore = playRound();
-        if (overallScore.includes("You Win")) {
-            playerScore+=1;
-            console.log(overallScore);
-            console.log("Score :  " + playerScore + " X " + computerScore);
-        } else if (overallScore.includes("You Lose")) {
-            computerScore+=1;
-            console.log(overallScore);
-            console.log("Score :  " + playerScore + " X " + computerScore);
-        } else if (overallScore.includes("Tie")) {
-            console.log(overallScore);
-        }
-    }
-
-    if (playerScore > computerScore) {
-        console.log("Congratulations! You won!"  + playerScore + " X " + computerScore);
-    } else if (playerScore < computerScore) {
-        console.log("Game Over. You Lost."  + playerScore + " X " + computerScore);
-    } else if (playerScore == computerScore) {
-        console.log("Tie! Nobody Wins!"  + playerScore + " X " + computerScore);
-    }
-}
-
-game();
+playRound();
